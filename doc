@@ -1,0 +1,132 @@
+This is an incredibly unique and visionary open-source project. By mapping the binary and structural rules of Telugu Chandassu (prosody) and Kirtanas, you are essentially building a Linguistic Compiler and Structural Evaluator for Telugu AI.
+Here is your comprehensive, step-by-step blueprint to launch this on GitHub.
+------------------------------
+## 📛 Project Name Suggestions
+Choose a name that reflects the bridge between ancient Telugu poetic structure and modern computational science:
+
+   1. chandas-compile (Simple, clear, and highly searchable for open-source devs).
+   2. padya-matrix (Sounds modern; reflects the mathematical grid nature of Ganamulu).
+   3. annama-fsm (If you want to focus heavily on the Finite State Machine structure of Kirtanas).
+   4. telugu-prosody-ai (Great for academic and AI community visibility).
+
+Recommended Pick: chandas-compile (We will use this for the steps below).
+------------------------------
+## 🛠️ Step-by-Step Implementation Guide## Step 1: Create the GitHub Repository [1] 
+
+   1. Go to [GitHub](https://github.com/) and log in. [2] 
+   2. Click the + icon in the top right -> New repository. [3] 
+   3. Repository name: chandas-compile
+   4. Description: An open-source Python framework mapping Telugu Chandassu rules (Laghu/Guru binary systems) and Kirtana structures into computational algorithms and AI benchmarks.
+   5. Public/Private: Public (so others can contribute). [4] 
+   6. Initialize this repository with:
+   * Check Add a README file (Crucial for explaining your concept).
+      * Add .gitignore: Choose Python.
+      * Choose a license: Choose MIT License (permits open collaboration). [5, 6, 7, 8, 9] 
+   7. Click Create repository. [10] 
+
+------------------------------
+## Step 2: Clone and Structure the Project Locally
+Open your terminal (or Git Bash) and run these commands to pull the project to your computer and set up a clean structure: [11, 12] 
+
+# Clone the repository
+git clone https://github.com
+cd chandas-compile
+# Create the folder structure
+mkdir -p core tests datasets examples
+touch core/__init__.py core/tokenizer.py core/binary_rules.py core/kirtana_fsm.py
+touch main.py requirements.txt
+
+Your folder layout will now look like this:
+
+* core/binary_rules.py: Script to convert Telugu text into Laghu (0) and Guru (1).
+* core/kirtana_fsm.py: The State Machine logic for Pallavi/Charanam loops.
+* datasets/: Folder where you will store text files of Annamayya Kirtanas or Padyalu.
+
+------------------------------
+## Step 3: Write the Core Code (The "Laghu-Guru" Binary Parser)
+To prove your concept works, you need a basic Minimum Viable Product (MVP). Open core/binary_rules.py in your code editor and write a rule engine that identifies short and long vowels in Telugu script.
+Here is a foundational Python example to get you started:
+
+# core/binary_rules.py
+# Define Telugu vowel types based on Unicode rangesSHORT_VOWELS = ['అ', 'ఇ', 'ఉ', 'ఋ', 'ఎ', 'ఒ']LONG_VOWELS = ['ఆ', 'ఈ', 'ఊ', 'ౠ', 'ఏ', 'ఓ', 'ఐ', 'ఔ']SHORT_MATRAS = ['ి', 'ు', 'ృ', 'ె', 'ొ'] # Short vowel signsLONG_MATRAS = ['ా', 'ీ', 'ూ', 'ౄ', 'ే', 'ో', 'ై', 'ౌ'] # Long vowel signs
+def analyze_syllable(char, next_is_conjunct=False):
+    """
+    Evaluates a Telugu character into Binary states: 
+    0 = Laghu (Short), 1 = Guru (Long)
+    """
+    # Rule 1: Long vowels or letters with long matras are Guru (1)
+    if char in LONG_VOWELS or any(m in char for m in LONG_MATRAS):
+        return 1
+    
+    # Rule 2: Short letters followed by a conjunct/blended consonant become Guru (1)
+    if next_is_conjunct:
+        return 1
+        
+    # Rule 3: Letters with a Sunna (ం) or Visarga (ః) are Guru (1)
+    if 'ం' in char or 'ః' in char:
+        return 1
+
+    # Rule 4: Default short letters are Laghu (0)
+    return 0
+
+------------------------------
+## Step 4: Write your Main Execution Script
+Open main.py and create a simple script to test your core rule engine:
+
+# main.pyfrom core.binary_rules import analyze_syllable
+def main():
+    print("--- Chandas-Compile MVP ---")
+    # Example testing a single word/syllable
+    sample_char = "రా" # Long 'Raa'
+    result = analyze_syllable(sample_char)
+    
+    state = "Guru (1)" if result == 1 else "Laghu (0)"
+    print(f"Character: {sample_char} -> Operational State: {state}")
+if __name__ == "__main__":
+    main()
+
+------------------------------
+## Step 5: Push Your Code to GitHub [13] 
+Go back to your terminal and run these standard Git commands to save and upload your progress:
+
+# Check changes
+git status
+# Stage all new files
+git add .
+# Commit with a clear message
+git commit -m "Initial commit: Setup project architecture and basic Laghu-Guru binary parser"
+# Push to your GitHub repository
+git push origin main
+
+------------------------------
+## Step 6: Write a Compelling README.md [14, 15] 
+The secret to a great GitHub repo is the README.md file. It acts as the homepage of your project. Edit the file on GitHub to explain your theory clearly to the world. Use this template: [16, 17, 18] 
+
+# Chandas-Compile 🕉️💻
+An open-source algorithmic engine that treats Telugu Poetic Prosody (*Chandassu*) and *Kirtanas* as structured state machines and binary arrays for advanced Telugu Language Processing (NLP) and LLM Evaluation.
+## 💡 The Core Concept- **Binary Syllables**: Telugu *Laghu* and *Guru* syllables translate directly to `0` and `1` bitwise operations.- **Rule Engines**: *Ganamulu* mimic 3-bit binary arrays. *Yati* and *Prasa* act as compiler validation constraints.- **State Machines**: Annamayya Kirtanas follow a Finite State Machine (FSM) architecture moving dynamically between the *Pallavi* (Home/Return state) and *Charanam* (Loop states).
+## 🚀 Roadmap- [ ] Phase 1: Perfect the Telugu syllable splitter and Laghu-Guru encoder.
+- [ ] Phase 2: Build validation algorithms for *Utpalamala*, *Champakamala*, and *Kanda Padyam*.
+- [ ] Phase 3: Launch an LLM Evaluation Benchmark suite using **AI4Bharat's** pipelines to test if Western vs. Indian LLMs can write syntactically correct Telugu poetry.
+
+------------------------------
+Now that your GitHub repository structure is completely planned out, how would you like to proceed? We can write the code to handle complex Telugu conjunct letters (Vatthulu), or we can plan out how the Kirtana Finite State Machine logic will look in Python code.
+
+[1] [https://pybit.es](https://pybit.es/articles/github-projects/)
+[2] [https://docs.draftbit.com](https://docs.draftbit.com/docs/github-commit)
+[3] [https://www.stat.cmu.edu](https://www.stat.cmu.edu/cmsac/sure/materials/setup_github.html)
+[4] [https://easydigitaldownloads.com](https://easydigitaldownloads.com/blog/how-to-work-with-git-or-github-for-digital-products-and-software/)
+[5] [https://mwamiselunani.medium.com](https://mwamiselunani.medium.com/connecting-a-github-repo-with-aws-db4d4a77b4c2)
+[6] [https://python.plainenglish.io](https://python.plainenglish.io/how-to-get-started-with-github-244b06877aad)
+[7] [https://www.robinwieruch.de](https://www.robinwieruch.de/git-essential-commands/)
+[8] [https://blog.devgenius.io](https://blog.devgenius.io/devops-beginners-project-3-build-a-python-ci-cd-pipeline-with-github-actions-6776359e096b)
+[9] [https://handsondataviz.org](https://handsondataviz.org/create-repo.html)
+[10] [https://joshuadull.github.io](https://joshuadull.github.io/GitHub-Desktop/02-getting-started/index.html)
+[11] [https://ubc-mds.github.io](https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/lectures/3-git-history-merge-conflicts-stash.html)
+[12] [https://csweb.wooster.edu](https://csweb.wooster.edu/hguarnera/cs222-fall20/assignments/setup1.html)
+[13] [https://medium.com](https://medium.com/devops-technical-notes-and-manuals/devops-example-project-for-your-resume-198e34d874b4)
+[14] [https://medium.com](https://medium.com/@niranjanky14/ml-project-github-setup-tutorial-python-vscode-403289eca93b)
+[15] [https://medium.com](https://medium.com/digitalcrafts/ways-to-up-your-game-with-a-readme-md-on-github-35eae99ee289)
+[16] [https://opencourse.inf.ed.ac.uk](https://opencourse.inf.ed.ac.uk/sites/default/files/https/opencourse.inf.ed.ac.uk/inf1b/2024/basic-git-commands.pdf)
+[17] [https://towardsdatascience.com](https://towardsdatascience.com/full-guide-to-build-a-professionnal-portfolio-with-python-markdown-git-and-github-page-for-66d12f7859f0/)
+[18] [https://carpentries-incubator.github.io](https://carpentries-incubator.github.io/jekyll-pages-novice/github-pages/)
