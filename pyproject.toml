@@ -1,0 +1,20 @@
+[project]
+name = "chandas-compile"
+version = "0.1.0"
+description = "A Python framework for Telugu Chandassu (prosody) and Kirtana structure analysis."
+readme = "README.md"
+authors = [
+  { name = "Open Source" }
+]
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+dependencies = [
+  "pytest>=8.0.0"
+]
+
+[project.scripts]
+chandas-compile = "core.cli:main"
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
