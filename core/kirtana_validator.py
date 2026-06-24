@@ -22,24 +22,26 @@ def parse_kirtana_text(text: str) -> list[SectionResult]:
     """Parse labeled Kirtana text into sections."""
     sections: list[SectionResult] = []
     current_section: SectionResult | None = None
+    section_labels = ["PALLAVI", "ANUPALLAVI", "CHARANAM"]
 
     for raw_line in text.splitlines():
         line = raw_line.strip()
         if not line:
             continue
 
-        if line.upper().startswith("PALLAVI:"):
-            current_section = SectionResult("PALLAVI", [line[len("PALLAVI:") :].strip()], [])
-            sections.append(current_section)
-            continue
+        upper_line = line.upper()
+        matched_label = next(
+            (label for label in section_labels if upper_line.startswith(f"{label}:")),
+            None,
+        )
 
-        if line.upper().startswith("CHARANAM:"):
-            current_section = SectionResult("CHARANAM", [line[len("CHARANAM:") :].strip()], [])
+        if matched_label:
+            current_section = SectionResult(matched_label, [line[len(matched_label) + 1 :].strip()], [])
             sections.append(current_section)
             continue
 
         if current_section is None:
-            raise ValueError("Kirtana text must begin with a section label like PALLAVI: or CHARANAM:.")
+            raise ValueError("Kirtana text must begin with a section label like PALLAVI:, ANUPALLAVI:, or CHARANAM:." )
 
         current_section.lines.append(line)
 
@@ -53,6 +55,8 @@ def validate_kirtana_sections(
     sequence = KirtanaFSM()
     section_results: list[SectionResult] = []
     structure_valid = True
+    section_order: list[str] = []
+    invalid_transitions: list[str] = []
 
     for index, section in enumerate(sections):
         if section.name not in expected_patterns:
@@ -75,14 +79,21 @@ def validate_kirtana_sections(
                 structure_valid = False
 
         section_results.append(section)
+        section_order.append(section.name)
 
         if index == 0:
             if section.name != sequence.state:
+                invalid_transitions.append(
+                    f"Expected initial section {sequence.state}, but found {section.name}."
+                )
                 structure_valid = False
                 sequence.transition(section.name)
             continue
 
         if not sequence.transition(section.name):
+            invalid_transitions.append(
+                f"Invalid transition from {sequence.history[-1]} to {section.name}."
+            )
             structure_valid = False
 
     if structure_valid and sequence.state != "END":
@@ -91,7 +102,9 @@ def validate_kirtana_sections(
 
     return {
         "sections": section_results,
+        "section_order": section_order,
         "structure_valid": structure_valid,
+        "invalid_transitions": invalid_transitions,
         "fsm_state": sequence.state,
     }
 

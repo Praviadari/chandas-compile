@@ -1,0 +1,25 @@
+{
+  "entries": [
+    {
+      "name": "utpalamala_example",
+      "text": "రామ ప్రేమ",
+      "meter": "utpalamala",
+      "source": "example",
+      "author": "unknown"
+    },
+    {
+      "name": "champakamala_example",
+      "text": "రామ సుఖం",
+      "meter": "champakamala",
+      "source": "example",
+      "author": "unknown"
+    },
+    {
+      "name": "kanda_padyam_example",
+      "text": "రామ ప్రేమ\nరామ సుఖం",
+      "meter": "kanda_padyam",
+      "source": "example",
+      "author": "unknown"
+    }
+  ]
+}

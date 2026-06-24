@@ -121,3 +121,4 @@ Agent Role: `Research Agent`
 - Assign one agent role to each major feature area.
 - Use the roadmap as a checklist for implementation, testing, and documentation.
 - Update the roadmap as new Telugu prosody requirements appear.
+- Refer to `docs/implementation_plan.md` for an execution-ready world-class implementation plan.

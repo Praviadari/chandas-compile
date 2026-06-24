@@ -104,3 +104,32 @@ def save_normalized_dataset(entries: list[dict[str, Any]], path: str | Path) -> 
     path_obj = Path(path)
     payload = {"entries": entries}
     path_obj.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def build_versioned_dataset(
+    entries: list[dict[str, Any]],
+    version: str,
+    source: str,
+    notes: str | None = None,
+) -> dict[str, Any]:
+    """Build a versioned dataset payload with provenance metadata."""
+    metadata = {
+        "version": version,
+        "source": source,
+        "entry_count": len(entries),
+        "notes": notes or "",
+    }
+    return {"metadata": metadata, "entries": entries}
+
+
+def save_versioned_dataset(
+    entries: list[dict[str, Any]],
+    path: str | Path,
+    version: str,
+    source: str,
+    notes: str | None = None,
+) -> None:
+    """Save a versioned normalized dataset to JSON."""
+    payload = build_versioned_dataset(entries, version=version, source=source, notes=notes)
+    path_obj = Path(path)
+    path_obj.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
