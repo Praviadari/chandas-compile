@@ -6,8 +6,8 @@ def test_validate_kirtana_text_valid() -> None:
 CHARANAM: రామ సుఖం.
 """
     expected_patterns = {
-        "PALLAVI": [[1, 0]],
-        "CHARANAM": [[1, 0]],
+        "PALLAVI": [[1, 0, 1, 0]],
+        "CHARANAM": [[1, 0, 0, 1]],
     }
     result = validate_kirtana_text(sample, expected_patterns)
     assert result["structure_valid"] is True
@@ -25,4 +25,4 @@ PALLAVI: రామ ప్రేమ.
     }
     result = validate_kirtana_text(sample, expected_patterns)
     assert result["structure_valid"] is False
-    assert result["fsm_state"] == "CHARANAM"
+    assert result["fsm_state"] == "PALLAVI"

@@ -23,11 +23,13 @@ kirtana structures as computational rules and finite-state transitions.
 - `core/kirtana_fsm.py`: Minimal kirtana finite-state machine.
 - `core/kirtana_validator.py`: Section-based kirtana parser and validator.
 - `core/meter_validator.py`: Meter pattern validation and text analysis.
+- `core/benchmark.py`: Benchmark-loading and evaluation helpers.
 - `main.py`: CLI demo script.
 - `tests/test_binary_rules.py`: Initial tests.
 - `tests/test_kirtana_fsm.py`: FSM sequence validation tests.
 - `tests/test_meter_validator.py`: Meter validation tests.
 - `tests/test_kirtana_validator.py`: Kirtana validator end-to-end tests.
+- `tests/test_benchmark.py`: Benchmark evaluation tests.
 
 ## Quick Start
 
@@ -44,3 +46,9 @@ pytest -q
 - Improve conjunct/vatthulu handling and true akshara segmentation.
 - Add chandassu validators (Utpalamala, Champakamala, Kanda Padyam).
 - Build dataset tooling and benchmark suite.
+
+## Benchmarking
+
+- `core/benchmark.py` loads JSON benchmark entries and evaluates kirtana validation results.
+- `datasets/sample_benchmark.json` includes a sample benchmark entry.
+- Use `python main.py` to exercise the benchmark demo and `pytest -q` to validate benchmark tests.

@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "name": "simple_kirtana",
+      "text": "PALLAVI: రామ ప్రేమ\nCHARANAM: రామ సుఖం\n",
+      "expected_patterns": {
+        "PALLAVI": [[1, 0, 1, 0]],
+        "CHARANAM": [[1, 0, 0, 1]]
+      },
+      "source": "example"
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from core.benchmark import BenchmarkEntry, evaluate_entry, load_benchmark_entries
 from core.binary_rules import analyze_syllable, encode_text
 from core.kirtana_validator import validate_kirtana_text
 from core.meter_validator import validate_pattern
@@ -30,17 +31,25 @@ def main() -> None:
     print(f"Actual:   {pattern_check['actual_pattern']}")
     print(f"Valid:    {pattern_check['valid']}")
 
-    kirtana_text = """PALLAVI: రామ సుఖం.
-CHARANAM: రామ ప్రేమ.
+    kirtana_text = """PALLAVI: రామ సుఖం
+CHARANAM: రామ ప్రేమ
 """
     expected_patterns = {
-        "PALLAVI": [[1, 0]],
-        "CHARANAM": [[1, 0]],
+        "PALLAVI": [[1, 0, 0, 1]],
+        "CHARANAM": [[1, 0, 1, 0]],
     }
     kirtana_result = validate_kirtana_text(kirtana_text, expected_patterns)
     print("\nKirtana validation example:")
     print(f"Structure valid: {kirtana_result['structure_valid']}")
     print(f"FSM state: {kirtana_result['fsm_state']}")
+
+    benchmark_entries = load_benchmark_entries("datasets/sample_benchmark.json")
+    benchmark_results = [evaluate_entry(entry) for entry in benchmark_entries]
+    print("\nBenchmark example results:")
+    for report in benchmark_results:
+        print(
+            f"- {report['name']}: valid={report['structure_valid']} state={report['fsm_state']}"
+        )
 
 
 if __name__ == "__main__":

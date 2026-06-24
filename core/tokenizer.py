@@ -8,6 +8,8 @@ from __future__ import annotations
 
 VIRAMA = "్"
 ZWJ = "\u200D"
+TELUGU_START = 0x0C00
+TELUGU_END = 0x0C7F
 DEPENDENT_MARKS = {
     "ా",
     "ి",
@@ -27,17 +29,21 @@ DEPENDENT_MARKS = {
 }
 
 
+def is_telugu_char(ch: str) -> bool:
+    code = ord(ch)
+    return TELUGU_START <= code <= TELUGU_END or ch in DEPENDENT_MARKS or ch in {VIRAMA, ZWJ}
+
+
 def split_aksharas(text: str) -> list[str]:
     """Split Telugu text into rough akshara units.
 
-    The tokenizer collects a base character and attaches subsequent dependent marks
-    or consonant joiners until a natural break is reached.
+    Non-Telugu punctuation and symbols are ignored when forming akshara units.
     """
     units: list[str] = []
     current = ""
 
     for ch in text.strip():
-        if ch.isspace():
+        if not is_telugu_char(ch):
             if current:
                 units.append(current)
                 current = ""

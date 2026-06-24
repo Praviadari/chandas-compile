@@ -54,7 +54,7 @@ def validate_kirtana_sections(
     section_results: list[SectionResult] = []
     structure_valid = True
 
-    for section in sections:
+    for index, section in enumerate(sections):
         if section.name not in expected_patterns:
             raise ValueError(f"Missing expected patterns for section {section.name}.")
 
@@ -75,7 +75,18 @@ def validate_kirtana_sections(
                 structure_valid = False
 
         section_results.append(section)
+
+        if index == 0:
+            if section.name != sequence.state:
+                structure_valid = False
+                sequence.transition(section.name)
+            continue
+
         if not sequence.transition(section.name):
+            structure_valid = False
+
+    if structure_valid and sequence.state != "END":
+        if not sequence.transition("END"):
             structure_valid = False
 
     return {
