@@ -10,7 +10,13 @@ from typing import Any
 
 from core import analyze_text, validate_kirtana_text, validate_pattern
 from core.benchmark import BenchmarkEntry, evaluate_entry, load_benchmark_entries
-from core.chandassu_validator import suggest_meter_names, validate_line_meter, validate_meter_text
+from core.chandassu_validator import (
+    get_meter_info,
+    list_known_meters,
+    suggest_meter_names,
+    validate_line_meter,
+    validate_meter_text,
+)
 from core.data_ingest import (
     load_csv_corpus,
     load_json_corpus,
@@ -67,11 +73,16 @@ def _serialize_report(report: dict[str, Any]) -> dict[str, Any]:
 
 
 def run_meter(args: argparse.Namespace) -> None:
-    text = read_text(args.file, args.text)
-    if args.meter == "suggest":
-        result = {"suggestions": suggest_meter_names(text)}
+    if args.list:
+        result = {"meters": list_known_meters()}
+    elif args.info is not None:
+        result = get_meter_info(args.info)
     else:
-        result = validate_meter_text(text, args.meter)
+        text = read_text(args.file, args.text)
+        if args.meter == "suggest":
+            result = {"suggestions": suggest_meter_names(text)}
+        else:
+            result = validate_meter_text(text, args.meter)
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
@@ -129,7 +140,10 @@ def main(argv: list[str] | None = None) -> None:
     kirtana_parser.set_defaults(func=run_kirtana)
 
     meter_parser = subparsers.add_parser("meter", help="Validate Telugu text against a named Chandassu meter")
-    meter_parser.add_argument("--meter", required=True, help="Named meter to validate, e.g. utpalamala, champakamala, kanda_padyam")
+    meter_group = meter_parser.add_mutually_exclusive_group(required=True)
+    meter_group.add_argument("--meter", help="Named meter to validate, e.g. utpalamala, champakamala, kanda_padyam, or suggest")
+    meter_group.add_argument("--list", action="store_true", help="List known Chandassu meter names")
+    meter_group.add_argument("--info", help="Show description and patterns for a named meter")
     meter_parser.add_argument("--text", help="Telugu text to validate")
     meter_parser.add_argument("--file", help="Path to a text file containing Telugu text")
     meter_parser.set_defaults(func=run_meter)

@@ -27,11 +27,17 @@ DEPENDENT_MARKS = {
     "ం",
     "ః",
 }
+YATI_MARKS = {"|", "॥", "।"}
 
 
 def is_telugu_char(ch: str) -> bool:
     code = ord(ch)
-    return TELUGU_START <= code <= TELUGU_END or ch in DEPENDENT_MARKS or ch in {VIRAMA, ZWJ}
+    return (
+        TELUGU_START <= code <= TELUGU_END
+        or ch in DEPENDENT_MARKS
+        or ch in YATI_MARKS
+        or ch in {VIRAMA, ZWJ}
+    )
 
 
 def split_aksharas(text: str) -> list[str]:
@@ -51,6 +57,13 @@ def split_aksharas(text: str) -> list[str]:
 
         if not current:
             current = ch
+            continue
+
+        if ch in YATI_MARKS:
+            if current:
+                units.append(current)
+            units.append(ch)
+            current = ""
             continue
 
         # Attach vowel signs and dependent marks to the current akshara.

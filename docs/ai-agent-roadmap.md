@@ -122,3 +122,5 @@ Agent Role: `Research Agent`
 - Use the roadmap as a checklist for implementation, testing, and documentation.
 - Update the roadmap as new Telugu prosody requirements appear.
 - Refer to `docs/implementation_plan.md` for an execution-ready world-class implementation plan.
+- Refer to `docs/future_work.md` for advanced future work and research-ready topics.
+- Refer to `docs/benchmark_design.md`, `docs/rule_reference.md`, and `docs/research_notes.md` for detailed design and research documentation.

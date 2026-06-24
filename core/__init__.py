@@ -35,4 +35,7 @@ __all__ = [
     "analyze_text",
     "format_bits",
     "validate_pattern",
+    "get_known_meter_names",
+    "get_meter_info",
+    "list_known_meters",
 ]

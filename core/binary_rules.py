@@ -11,6 +11,7 @@ LONG_MATRAS = {"ా", "ీ", "ూ", "ౄ", "ే", "ో", "ై", "ౌ"}
 ANUSVARA = "ం"
 VISARGA = "ః"
 VIRAMA = "్"
+YATI_MARKS = {"|", "॥", "।"}
 
 
 def analyze_syllable(char: str, next_is_conjunct: bool = False) -> int:
@@ -28,6 +29,10 @@ def analyze_syllable(char: str, next_is_conjunct: bool = False) -> int:
 
     # Anusvara/visarga make the syllable Guru.
     if ANUSVARA in char or VISARGA in char:
+        return 1
+
+    # Yati marks often increase weight or reset meter context.
+    if any(mark in char for mark in YATI_MARKS):
         return 1
 
     # Short vowels and short matras are Laghu.
@@ -70,6 +75,9 @@ def analyze_syllable_with_trace(char: str, next_is_conjunct: bool = False) -> tu
     if char.endswith(VIRAMA):
         reasons.append("Ends with halant/virama -> Guru (closed/clipped syllable). ")
 
+    if any(mark in char for mark in YATI_MARKS):
+        reasons.append("Yati or punctuation marker present -> Guru-like extra weight.")
+
     if char in SHORT_VOWELS or any(mark in char for mark in SHORT_MATRAS):
         if result == 0:
             reasons.append("Short vowel or short matra detected -> Laghu.")
@@ -92,7 +100,21 @@ def analyze_text_with_trace(text: str) -> list[dict[str, object]]:
     for idx, unit in enumerate(units):
         next_is_conjunct = idx + 1 < len(units) and units[idx + 1].startswith(VIRAMA)
         value, reasons = analyze_syllable_with_trace(unit, next_is_conjunct=next_is_conjunct)
-        traced.append({"unit": unit, "value": value, "reasons": reasons})
+        yati = any(mark in unit for mark in YATI_MARKS)
+
+        entry = {
+            "unit": unit,
+            "value": value,
+            "yati": yati,
+            "reasons": reasons,
+        }
+
+        traced.append(entry)
+
+        if yati and idx > 0:
+            traced[idx - 1]["yati"] = True
+            traced[idx - 1]["reasons"].append("Adjacent yati marker affects the previous syllable.")
+
     return traced
 
 

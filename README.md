@@ -78,6 +78,9 @@ Then use the CLI:
 ```bash
 chandas-compile analyze --text "రామ ప్రేమ"
 chandas-compile validate --text "రామ ప్రేమ" --expected 1,0,1,0
+chandas-compile meter --list
+chandas-compile meter --info utpalamala
+chandas-compile meter --meter suggest --text "రామ ప్రేమ"
 chandas-compile benchmark --file datasets/sample_benchmark.json
 ```
 
